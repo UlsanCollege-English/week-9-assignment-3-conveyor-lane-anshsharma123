@@ -1,17 +1,24 @@
-"""
-HW03 — Conveyor Lane: Nearly-Sorted Packages
-
-Implement sort_k_sorted(arr, k) -> list
-"""
+import heapq
 
 def sort_k_sorted(arr, k):
-    # TODO:
-    # 1) Understand the k-near-sorted guarantee.
-    # 2) Re-phrase: use a min-heap of size k+1.
-    # 3) Identify inputs/outputs/vars.
-    # 4) Break down: push first k+1; then for each next item: push, pop to output; finally drain heap.
-    # 5) Pseudocode above.
-    # 6) Write code.
-    # 7) Debug with small arrays.
-    # 8) Explain O(n log k).
-    raise NotImplementedError
+    if not arr:
+        return []
+    if k <= 0:
+        return list(arr)
+
+    # If k >= len(arr), sorting whole array is safe
+    if k >= len(arr):
+        return sorted(arr)
+
+    heap = arr[:k+1]
+    heapq.heapify(heap)
+    result = []
+
+    for i in range(k+1, len(arr)):
+        result.append(heapq.heappop(heap))
+        heapq.heappush(heap, arr[i])
+
+    while heap:
+        result.append(heapq.heappop(heap))
+
+    return result

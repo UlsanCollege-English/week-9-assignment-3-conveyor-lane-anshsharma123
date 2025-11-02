@@ -1,8 +1,10 @@
-import importlib.util, pathlib
+import importlib.util
+import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("main", ROOT / "conveyor_lane.py")
-main = importlib.util.module_from_spec(SPEC); SPEC.loader.exec_module(main)
+main = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(main)
 sort_k_sorted = main.sort_k_sorted
 
 # --- normal (4) ---
@@ -29,7 +31,8 @@ def test_k_big():
 
 def test_duplicates():
     arr = [3,3,3,2,2,1]
-    assert sort_k_sorted(arr, 3) == [1,2,2,3,3,3]
+    # Changed k=5 to match max displacement
+    assert sort_k_sorted(arr, 5) == [1,2,2,3,3,3]
 
 # --- complex (3) ---
 def test_already_sorted_large_k():
